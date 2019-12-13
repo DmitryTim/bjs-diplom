@@ -55,4 +55,92 @@ class Profile {
         console.log(`Error during getting stoks`);
         console.log(err);
     }
-  } );
+  } 
+  );
+  
+  function main() {
+
+  const user1 = new Profile({
+    username: 'Vasec',
+    name: {firstName: 'Vasiliy', lastName:'Pupkin'},
+    password: 'vas95'
+  });
+
+  const user2 = new Profile({
+    username: 'Petka',
+    name: {firstName: 'Peter', lastName:'Petrov'},
+    password: 'pet96'
+  });
+
+  user2.addUser( (err, data) => {
+    if (err){
+      if (err.code === 409) console.log(`User ${user2.username} already exists`); 
+      else {
+        console.log(`Error during adding user ${user2.username}`); 
+        console.log(err);                                        
+      }
+    }
+  });
+
+  user1.addUser( (err, data) => {
+    if (err){
+      if (err.code === 409) console.log(`User ${user1.username} already exists`); 
+      else {
+        console.log(`Error during adding user ${user1.username}`); 
+        console.log(err);                                         
+      }
+    }
+    if (!err || err.code === 409) { 
+      if (!err) console.log(`Added user ${user1.username}`);
+
+      user1.authorization( (err, data) => {
+        if (err) {
+          console.log(`Error during authorizating user ${user1.username}`);
+          console.log(err);
+        }
+        else {
+          console.log(`Authorized user ${user1.username}`);
+
+          addCurrency = 'RUB';
+          addAmount = 500000;
+          user1.addMoney( {currency: addCurrency, amount: addAmount}, (err,data) => {
+            if (err) {
+              console.log(`Error during adding ${addAmount} of ${addCurrency} to ${user1.username}`);
+              console.log(err);
+            }
+            else {
+              console.log(`Added ${addAmount} of ${addCurrency} to ${user1.username}`);
+
+              convertFromCurrency = 'RUB';
+              convertTargetCurrency = 'NETCOIN';
+              convertTargetAmount = 100;
+              user1.convertMoney( {fromCurrency: convertFromCurrency, targetCurrency: convertTargetCurrency, targetAmount: convertTargetAmount}, (err,data) => {
+                if (err) {
+                  console.log(`Error during converting ${convertFromCurrency} to ${convertTargetAmount} of ${convertTargetCurrency}`);
+                  console.log(err);
+                }
+                else {
+                  console.log(`Converted ${convertFromCurrency} to ${convertTargetAmount} of ${convertTargetCurrency}`);
+
+                  transferTo = 'Petka';
+                  transferAmount = 50;
+                  user1.transferMoney( {to: transferTo, amount: transferAmount}, (err,data) => {
+                    if (err) {
+                      console.log(`Error during transfering ${transferAmount} NETCOINS from ${user1.username} to ${transferTo}`);
+                      console.log(err);
+                    }
+                    else console.log(`Transfered ${transferAmount} NETCOINS from ${user1.username} to ${transferTo}`);
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+}
+main();
+  
+  
+  
