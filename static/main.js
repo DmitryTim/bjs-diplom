@@ -61,15 +61,15 @@ class Profile {
   function main() {
 
   const user1 = new Profile({
-    username: 'Vasec',
-    name: {firstName: 'Vasiliy', lastName:'Pupkin'},
-    password: 'vas95'
+    username: 'Dtim',
+    name: {firstName: 'Dmitry', lastName:'Timakov'},
+    password: 'tim92'
   });
 
   const user2 = new Profile({
-    username: 'Petka',
-    name: {firstName: 'Peter', lastName:'Petrov'},
-    password: 'pet96'
+    username: 'Rach',
+    name: {firstName: 'Andrey', lastName:'Rachitskiy'},
+    password: 'and95'
   });
 
   user2.addUser( (err, data) => {
