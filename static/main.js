@@ -85,38 +85,43 @@ class Profile {
         } else {
             console.log(`${user1.username} is created!`);
             
-            user2.createUser((err, data) => {
+            user2.addUser((err, data) => {
                 if(err) {
                     console.error(`Error during creating user2`);
                     } else {
                         console.log(`${user2.username} is created!`);
                         
-                        user1.performLogin((err, data) => {
+                        user1.authorization((err, data) => {
                             if(err) {
                                 console.error(`Error during authorizing user1`);
                                 } else {
                                     console.log(`${user1.username} is authorized!`);
+										user2.authorization((err, data) => {
+											if(err) {
+												console.error(`Error during authorizing user2`);
+												} else {
+													console.log(`${user2.username} is authorized!`);
                                     
-                                    user1.addMoney({ currency: 'RUB', amount: 1000 }, (err, data) => {
-                                        if (err) {
-                                            console.error('Error during adding money to user1');
-                                        } else {
-                                            const converted = currencyConvert[99].RUB_NETCOIN * data.wallet.RUB;
-                                            //console.log(converted);
-                                            console.log(`Added 1000 RUB to ${user1.username}`);
-                                            
-                                            user1.convertMoney({fromCurrency: 'RUB', targetCurrency: 'NETCOIN', targetAmount: converted}, (err, data) => {
-                                                if (err) {
-                                                    console.error('Error during converting money');
-                                                } else {
-                                                        console.log(`Converted to coins`, data);
-                                                        const transfer = data.wallet.NETCOIN;
-                                                        user1.transferMoney({to: user2.username, amount: transfer}, (err, data) => {
-                                                            if(err) {
-                                                                console.error('Error during transfer money');
-                                                            } else {
-                                                                console.log(`user2 has got ${transfer} NETCOINS`);
-                                                        }});
+														user1.addMoney({ currency: 'RUB', amount: 1000 }, (err, data) => {
+															if (err) {
+															console.error('Error during adding money to user1');
+																} else {
+																	const converted = currencyConvert[99].RUB_NETCOIN * data.wallet.RUB;
+																	//console.log(converted);
+																	console.log(`Added 1000 RUB to ${user1.username}`);
+																	
+																	user1.convertMoney({fromCurrency: 'RUB', targetCurrency: 'NETCOIN', targetAmount: converted}, (err, data) => {
+																		if (err) {
+																			console.error('Error during converting money');
+																		} else {
+																				console.log(`Converted to coins`, data);
+																				const transfer = data.wallet.NETCOIN;
+																				user1.transferMoney({to: user2.username, amount: transfer}, (err, data) => {
+																					if(err) {
+																						console.error('Error during transfer money');
+																					} else {
+																						console.log(`user2 has got ${transfer} NETCOINS`);
+																				}});
                                             }}); 
                                     }});                                  
                         }});
